@@ -73,7 +73,7 @@ def get_dataset():
 
 
 def compute_stats(dataset):
-    loader = DataLoader(ds,
+    loader = DataLoader(dataset,
                         batch_size=400,
                         shuffle=False)
 
