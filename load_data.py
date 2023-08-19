@@ -28,7 +28,7 @@ class ImageDataset(Dataset):
     default_transform = transforms.Compose([
         transforms.ToTensor(),
         transforms.Resize(constants.DEFAULT_IMG_SIZE , antialias=True),
-        transforms.Normalize(mean=[0.5324, 0.5285, 0.5349], std=[0.2546, 0.2426, 0.2710]),
+        transforms.Normalize(mean=constants.MEAN, std=constants.STD),
     ])
 
     def __init__(self, img_dir, transform=default_transform, target_transform=None):
