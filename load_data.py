@@ -7,8 +7,8 @@ from torchvision import transforms
 from torch.utils.data import Dataset, DataLoader
 from PIL import Image
 
-dataset_path = 'dataset_weather'
-target_categories = ['fogsmog', 'rain', 'snow', 'rime', 'lightning', 'sandstorm', 'shine', 'sunrise', 'cloudy']
+import constants
+
 
 '''
 class ToRGB():
@@ -24,11 +24,10 @@ class ToRGB():
 
 
 class ImageDataset(Dataset):
-    default_size = (260, 400)
 
     default_transform = transforms.Compose([
         transforms.ToTensor(),
-        transforms.Resize(default_size, antialias=True),
+        transforms.Resize(constants.DEFAULT_IMG_SIZE , antialias=True),
         transforms.Normalize(mean=[0.5324, 0.5285, 0.5349], std=[0.2546, 0.2426, 0.2710]),
     ])
 
@@ -61,7 +60,7 @@ class ImageDataset(Dataset):
     def collect_images(self):
         img_paths = []
         labels = []
-        for i_category, category in enumerate(target_categories):
+        for i_category, category in enumerate(constants.TARGET_CATEGORIES):
             img_dir_path = os.path.join(self.img_dir, category)
             new_img_names = os.listdir(img_dir_path)
             new_paths = [os.path.join(img_dir_path, name) for name in new_img_names if
@@ -74,7 +73,7 @@ class ImageDataset(Dataset):
 
 
 def get_dataset():
-    return ImageDataset(dataset_path)
+    return ImageDataset(constants.DATASET_PATH)
 
 
 def compute_stats(dataset):
