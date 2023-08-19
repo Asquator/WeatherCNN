@@ -31,11 +31,10 @@ class ImageDataset(Dataset):
         transforms.Normalize(mean=[0.5324, 0.5285, 0.5349], std=[0.2546, 0.2426, 0.2710]),
     ])
 
-    def __init__(self, img_dir, transform=default_transform, target_transform=None, image_size=default_size):
+    def __init__(self, img_dir, transform=default_transform, target_transform=None):
         self.img_dir = img_dir
         self.transform = transform
         self.target_transform = target_transform
-        self.image_size = image_size
         self.data = self.collect_images()
 
     def __len__(self):
@@ -53,9 +52,6 @@ class ImageDataset(Dataset):
             label = self.target_transform(label)
 
         return image, label
-
-    def img_size(self):
-        return self.image_size
 
     def collect_images(self):
         img_paths = []
@@ -81,7 +77,7 @@ def compute_stats(dataset):
                         batch_size=400,
                         shuffle=False)
 
-    img_size = dataset.img_size()
+    img_size = constants.DEFAULT_IMG_SIZE
     n_total_pixels = len(dataset) * img_size[0] * img_size[1]
 
     r_sum = g_sum = b_sum = 0
