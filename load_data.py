@@ -42,7 +42,7 @@ class ImageDataset(Dataset):
 
     def __getitem__(self, idx):
         img_path = self.data.iloc[idx, 0]
-        label = self.data.iloc[idx, 1]
+        label = int(self.data.iloc[idx, 1])
 
         image = Image.open(img_path).convert('RGB')
         if self.transform:
@@ -74,7 +74,7 @@ def get_dataset():
 
 def compute_stats(dataset):
     loader = DataLoader(dataset,
-                        batch_size=400,
+                        batch_size=128,
                         shuffle=False)
 
     img_size = constants.DEFAULT_IMG_SIZE
