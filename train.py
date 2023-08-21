@@ -22,7 +22,7 @@ def test(model, train_loader, val_loader):
 
 def train_epochs(n_epochs, optimizer, model, loss_fn, train_loader, val_loader, verbose=True):
     model.train()
-    for epoch in range(n_epochs):
+    for epoch in range(1, n_epochs + 1):
         total_loss = 0.0
         for b_i, (b_imgs, b_labels) in enumerate(train_loader):
             b_imgs = b_imgs.to(device)
@@ -43,6 +43,6 @@ def train_epochs(n_epochs, optimizer, model, loss_fn, train_loader, val_loader, 
         if verbose:
             test_acc = test(model, train_loader, val_loader)
             print(f'-----\nEpoch: {epoch}\n'
-                  f'Training loss: {total_loss / len(train_loader)}\n'
+                  f'Average training loss: {total_loss / len(train_loader)}\n'
                   f'Training accuracy: {test_acc[0]}\n'
                   f'Validation accuracy: {test_acc[1]}\n-----')

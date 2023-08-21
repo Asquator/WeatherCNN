@@ -14,6 +14,7 @@ from constants import device
 if __name__ == '__main__':
     model = ConvNet()
     model.to(device)
+    print(model)
     dataset = get_dataset()
 
     data_train, data_val = random_split(dataset, [0.85, 0.15])
@@ -22,5 +23,5 @@ if __name__ == '__main__':
     train_loader = DataLoader(data_train, 16, shuffle=True)
     val_loader = DataLoader(data_val, 16, shuffle=True)
 
-    train_epochs(15, optim.SGD(model.parameters(), lr=1e-2, momentum=0.9), model, nn.CrossEntropyLoss(), train_loader, val_loader)
+    train_epochs(25, optim.SGD(model.parameters(), lr=1e-2, momentum=0.9), model, nn.CrossEntropyLoss(), train_loader, val_loader)
 
