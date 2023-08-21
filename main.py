@@ -20,8 +20,8 @@ if __name__ == '__main__':
     data_train, data_val = random_split(dataset, [0.85, 0.15])
     print(f'Training samples:{len(data_train)}\nValidation samples:{len(data_val)}\n')
 
-    train_loader = DataLoader(data_train, 16, shuffle=True)
-    val_loader = DataLoader(data_val, 16, shuffle=True)
+    train_loader = DataLoader(data_train, 8, shuffle=True)
+    val_loader = DataLoader(data_val, 8, shuffle=True)
 
-    train_epochs(25, optim.SGD(model.parameters(), lr=1e-2, momentum=0.9), model, nn.CrossEntropyLoss(), train_loader, val_loader)
+    train_epochs(18, optim.SGD(model.parameters(), lr=1e-3, momentum=0.9), model, nn.CrossEntropyLoss(), train_loader, val_loader)
 

@@ -31,7 +31,7 @@ def train_epochs(n_epochs, optimizer, model, loss_fn, train_loader, val_loader, 
             b_outputs = model(b_imgs)
             loss = loss_fn(b_outputs, b_labels)
 
-            if verbose and b_i % 20 == 0:
+            if verbose and b_i % 30 == 0:
                 print(f'Epoch {epoch} out of {n_epochs}, Batch {b_i} out of {len(train_loader)}, Loss: {loss}')
 
             optimizer.zero_grad()
