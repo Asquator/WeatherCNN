@@ -3,18 +3,21 @@ import torch
 from constants import device
 
 
-def test(model, loader):
+def test(model, train_loader, val_loader):
     model.eval()
+    accuracies = []
     with torch.no_grad():
-        total = 0
-        correct = 0
-        for b_imgs, b_labels in loader:
-            total += len(b_labels)
-            b_out = model(b_imgs)
-            b_pred = torch.argmax(b_out, dim=1)
-            correct += (b_pred == b_labels).sum()
+        for loader in [train_loader, val_loader]:
+            total = 0
+            correct = 0
+            for b_imgs, b_labels in loader:
+                total += len(b_labels)
+                b_out = model(b_imgs)
+                b_pred = torch.argmax(b_out, dim=1)
+                correct += (b_pred == b_labels).sum()
 
-        return correct / total
+            accuracies.append(correct / total)
+        return accuracies
 
 
 def train_epochs(n_epochs, optimizer, model, loss_fn, train_loader, val_loader, verbose=True):
@@ -38,6 +41,8 @@ def train_epochs(n_epochs, optimizer, model, loss_fn, train_loader, val_loader, 
             total_loss += loss
 
         if verbose:
-            print(f'--Epoch: {epoch}\n'
-                  f'Train loss: {total_loss / len(train_loader)}\n'
-                  f'Validation accuracy: {test(model, val_loader)}--')
+            test_acc = test(model, train_loader, val_loader)
+            print(f'-----\nEpoch: {epoch}\n'
+                  f'Training loss: {total_loss / len(train_loader)}\n'
+                  f'Training accuracy: {test_acc[0]}\n'
+                  f'Validation accuracy: {test_acc[1]}\n-----')

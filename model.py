@@ -10,7 +10,7 @@ class NetBlock(nn.Module):
         super().__init__()
         self.batchnorm_needed = batchnorm_needed
         self.conv = nn.Conv2d(in_chans, out_chans, kernel_size=kernel_size)
-        self.pool = nn.AvgPool2d(kernel_size=2, stride=2)
+        self.pool = nn.MaxPool2d(kernel_size=2, stride=2)
         if batchnorm_needed:
             self.batch_norm = nn.BatchNorm2d(num_features=out_chans)
 
@@ -26,7 +26,7 @@ class NetBlock(nn.Module):
 
 
 class ConvNet(nn.Module):
-    def __init__(self, n_channels1=12, n_layers=3, kernel_size=5, batchnorm=False):
+    def __init__(self, n_channels1=18, n_layers=5, kernel_size=3, batchnorm=False):
         super().__init__()
 
         self.conv1 = nn.Conv2d(3, n_channels1, kernel_size)
@@ -47,13 +47,16 @@ class ConvNet(nn.Module):
             n_chans = next_n_chans
             next_n_chans = int(n_channels1 / 2) + 1
 
-        self.fc_out = nn.Linear(9016, len(constants.TARGET_CATEGORIES))
+        self.fc_hidden = nn.Linear(600, 128)
+        self.fc_out = nn.Linear(128, len(constants.TARGET_CATEGORIES))
 
     def forward(self, x):
         res = self.conv1(x)
         res = torch.relu(res)
         res = self.conv_hidden(res)
         res = res.view(res.size()[0], -1)
+        res = torch.relu(res)
+        res = self.fc_hidden(res)
         res = torch.relu(res)
         res = self.fc_out(res)
         res = F.log_softmax(res, dim=1)
