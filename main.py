@@ -7,7 +7,7 @@ from torch import optim
 
 from load_data import get_dataset
 from model import ConvNet
-from train import train_epochs
+from train import *
 
 from constants import device
 
@@ -23,5 +23,7 @@ if __name__ == '__main__':
     train_loader = DataLoader(data_train, 8, shuffle=True)
     val_loader = DataLoader(data_val, 8, shuffle=True)
 
-    train_epochs(18, optim.SGD(model.parameters(), lr=1e-3, momentum=0.9), model, nn.CrossEntropyLoss(), train_loader, val_loader)
+    train_interactive(optim.SGD(model.parameters(), lr=1e-3, momentum=0.9), model, nn.CrossEntropyLoss(), train_loader,
+                      val_loader, 20, 0.95)
 
+    # train_epochs(18, optim.SGD(model.parameters(), lr=1e-3, momentum=0.9), model, nn.CrossEntropyLoss(), train_loader, val_loader)
